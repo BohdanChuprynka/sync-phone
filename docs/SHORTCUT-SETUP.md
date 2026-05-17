@@ -11,18 +11,42 @@ Target file the shortcut writes to:
 
 ## Step 1: Build the "Add to Wiki" shortcut
 
-**Goal**: tap a button or say "Hey Siri, add to wiki, [thought]" → dictate → entry appends to `iphone-raw.md` in iCloud.
+**Goal**: tap a button or say "Hey Siri, add to wiki" → speak → entry appends to `iphone-raw.md` in iCloud.
+
+**Why Record Audio + Transcribe, not Dictate Text:** Dictate Text is unreliable in practice — it cuts off mid-thought, drops words on noisy walks, and sometimes never fires the "stop" condition. Record Audio captures the full waveform first, then transcribes it as a separate step. You get the complete thought every time, and the transcription quality is noticeably better because it has the whole audio file to work with.
 
 1. Shortcuts app → tap **+** (top right) → name it exactly **`Add to Wiki`** (Siri matches this name).
 2. Add actions in this order:
 
 | # | Action | Setting |
 |---|--------|---------|
-| 1 | **Dictate Text** | Language: your choice. Stop Listening: On Tap (or After Pause) |
-| 2 | **Get Current Date** | Format: Custom → `yyyy-MM-dd HH:mm` |
-| 3 | **Text** | Content: `\n## [Date]\n[Dictated Text]\n` |
-| 4 | **Append to File** | File: tap **File** → choose **iCloud Drive → _obsidian-capture → iphone-raw.md** |
-| 5 | **Show Notification** (optional) | Title: "Captured". Body: first 50 chars of [Dictated Text] |
+| 1 | **Record Audio** | Audio Quality: **Very High**. Start Recording: **Immediately**. Finish Recording: **On Tap**. |
+| 2 | **Transcribe Recorded Audio to text** | Input: **Recorded Audio** (from action 1). |
+| 3 | **Get Current Date** | Format: Custom → `yyyy-MM-dd HH:mm` (or whatever you prefer) |
+| 4 | **Text** | Content: `### ([Current Date]) Content:\n"[Transcribed Audio]"\n` |
+| 5 | **Append to File** | File: tap **File** → choose **iCloud Drive → _obsidian-capture → iphone-raw.md**. Input: **Text** (from action 4). |
+| 6 | **Show Notification** (optional) | Title: "Captured". Body: first 50 chars of [Transcribed Audio]. |
+
+Visually:
+
+```
+Record audio                (Very High / Immediately / On Tap)
+        |
+        v
+Transcribe Recorded Audio to text
+        |
+        v
+Current Date
+        |
+        v
+Text: ### (Current Date) Content:
+      "Transcribed Audio"
+        |
+        v
+Append Text to _obsidian-capture/iphone-raw.md
+```
+
+The skill's parser is forgiving about the exact header format — `## YYYY-MM-DD HH:MM`, `### (date) Content:`, or anything similar all parse fine. Pick whatever the iPhone Shortcuts editor makes easiest.
 
 ---
 
