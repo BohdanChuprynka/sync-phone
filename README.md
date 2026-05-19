@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> **This repo has moved.** `sync-phone` is now maintained inside the [`skills` monorepo](https://github.com/BohdanChuprynka/skills/tree/main/sync-phone) alongside my other Claude Code skills. Full git history was preserved via `git subtree`. This repository is archived and read-only.
+
 <div align="center">
 
 <h1>sync-phone</h1>
